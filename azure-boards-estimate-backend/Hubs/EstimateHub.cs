@@ -21,7 +21,7 @@ namespace Estimate.Hubs
 
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, sessionId);
 
-            var connectionInfo = new ConnectionInfo(new Guid(sessionId), new Guid(tfId));
+            var connectionInfo = new ConnectionInfo(sessionId, new Guid(tfId[0]));
             ConnectionMapping.AddOrUpdate(this.Context.ConnectionId, connectionInfo, (key, value) => connectionInfo);
 
             await base.OnConnectedAsync();
@@ -51,9 +51,9 @@ namespace Estimate.Hubs
             await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, sessionId.ToString());
         }        
 
-        public async Task Broadcast(Guid sessionId, string action, object payload)
+        public async Task Broadcast(string sessionId, string action, object payload)
         {
-            await this.Clients.Group(sessionId.ToString()).SendAsync(action, payload);
+            await this.Clients.Group(sessionId).SendAsync(action, payload);
         }
     }
 }
