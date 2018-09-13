@@ -41,19 +41,22 @@ namespace Estimate.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task Join(UserInfo userInfo, Guid sessionId)
+        public async Task Join(string sessionId, UserInfo userInfo)
         {
-            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, sessionId.ToString());
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, sessionId);
+
+            // Tell other clients about the newly joined one
+            await this.Others(sessionId, "join", userInfo);
         }
 
-        public async Task Leave(Guid sessionId)
+        public async Task Others(string sessionId, string action, object payload)
         {
-            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, sessionId.ToString());
-        }        
+            await this.Clients.OthersInGroup(sessionId).SendAsync("broadcast", action, payload);
+        }
 
         public async Task Broadcast(string sessionId, string action, object payload)
         {
-            await this.Clients.Group(sessionId).SendAsync(action, payload);
+            await this.Clients.Group(sessionId).SendAsync("broadcast", action, payload);
         }
     }
 }
