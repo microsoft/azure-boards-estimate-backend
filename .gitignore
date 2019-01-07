@@ -5,3 +5,6 @@
 /.vs
 /**/bin/
 /**/obj/
+/**/*.pubxml
+/**/*.pubxml.*
+/**/*.csproj.user

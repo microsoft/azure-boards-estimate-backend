@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Estimate</RootNamespace>
     <AssemblyName>Estimate</AssemblyName>
+    <UserSecretsId>800e932a-b4ea-474d-8b4e-e6f4740dd72f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
